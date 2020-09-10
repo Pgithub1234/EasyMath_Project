@@ -4,7 +4,7 @@ import Slave2
 
 
 def main():
-    """This is to call functions from slave and act accordingly and update"""
+    """This is to call functions from slave and act accordingly """
     main_object = Slave2.All_functions(2, 2, 3, 3)
     show_value = Slave2.ShowValue(0, 0)
     _widget = Tk()
