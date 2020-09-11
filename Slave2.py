@@ -136,6 +136,7 @@ class All_functions:
     @staticmethod
     def save_button_show_graph_button(widget, main_object):
         """"this is another button widget created """
+        All_functions.std_fg = 'green'
         _save_button = main_object.Create_button(widget, "Save")
         main_object.grid_manager(widget, _save_button, main_object)
         _save_button['command'] = lambda: [
@@ -148,6 +149,7 @@ class All_functions:
             graph.create_chart(widget, main_object, main_object.widget_and_value_inUI)]
         main_object._save_button = _save_button
         main_object._showgraph = _showgraph
+        All_functions.std_fg = 'blue'
 
     @staticmethod
     def get_total_number_of_RC(widget, main_object):
@@ -243,6 +245,7 @@ class All_functions:
                 All_functions.additional_items_added.append(param[1][i])
                 column += 1
                 i += 1
+
         else:
             """this will arrange a single element in last row and column"""
             All_functions.get_total_number_of_RC(param[0], param[2])
