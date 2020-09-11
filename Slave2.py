@@ -30,6 +30,7 @@ class All_functions:
         self.last_default_row = last_default_row
         self.rowcount = rowcount
         self.columncount = columncount
+
     @staticmethod
     def default_content(widget, main_object):
         widget.geometry("1075x400")
@@ -68,9 +69,11 @@ class All_functions:
     def update_income_into_dictionary(widget_toget_value):
         value_to_get = widget_toget_value.get()
         print("type of value from get function", type(value_to_get))
-        All_functions.widget_and_value_inUI["Income"] = value_to_get
-        print("valuies inside dict ", All_functions.widget_and_value_inUI.items())
-        All_functions.onsave_add_to_xml(All_functions.widget_and_value_inUI)
+        if value_to_get != '':
+            All_functions.widget_and_value_inUI["Income"] = value_to_get
+            print("valuies inside dict ", All_functions.widget_and_value_inUI.items())  ##
+            All_functions.onsave_add_to_xml(All_functions.widget_and_value_inUI)
+
     @staticmethod
     def create_app(widget, main_object):
         """Properties of window"""
@@ -109,6 +112,7 @@ class All_functions:
             font=All_functions.font_All
         )
         return Label1
+
     @staticmethod
     def Create_button(widget, text_to_display):
         """this will create a button tk widget for the argument passed"""
@@ -139,7 +143,9 @@ class All_functions:
             main_object.Beat_bad_value(main_object.additional_items_added)]
         _showgraph = main_object.Create_button(widget, "Show Graph")
         main_object.grid_manager(_showgraph, 4, 1)
-        _showgraph['command'] = lambda: graph.create_chart(widget, main_object, main_object.widget_and_value_inUI)
+        _showgraph['command'] = lambda: [
+            graph.check_flag_forGraph(widget),
+            graph.create_chart(widget, main_object, main_object.widget_and_value_inUI)]
         main_object._save_button = _save_button
         main_object._showgraph = _showgraph
 
@@ -200,20 +206,21 @@ class All_functions:
     @staticmethod
     def on_clicking_add(widget_entry1, widget_entry2, widget_toenter):
         """this will add entry 1 and entry2 and updtate in entry2 also throw warning shot for non numeric value"""
-        try:
-            try:
-                text1 = int(widget_entry1.get())
-            except:
-                text1 = 0
-                messagebox.showwarning('Bad Value', 'Please Enter numeric value!!!')
-            try:
-                text2 = int(widget_entry2.get())
-            except:
-                text2 = 0
-                messagebox.showwarning('Bad Value', 'Please Enter numeric value!!!')
-        except:
+        text1 = widget_entry1.get()
+        text2 = widget_entry2.get()
+        if text1.isdigit():
+            text1 = int(text1)
+        elif text1 == '':
             text1 = 0
+        else:
+            messagebox.showwarning('Bad Value', 'Please Enter numeric value!!!')
+        if text2.isdigit():
+            text2 = int(text2)
+        elif text2 == '':
             text2 = 0
+        else:
+            messagebox.showwarning('Bad Value', 'Please Enter numeric value!!!')
+
         added_value = text1 + text2
         widget_toenter.delete(first=0, last=25)
         widget_toenter.insert(0, added_value)
@@ -434,6 +441,12 @@ class graph():
             messagebox.showwarning('Update Income Value', 'Please update income value and click on update!!!')
             graph.canvas.get_tk_widget().grid_remove()
 
+    @staticmethod
+    def check_flag_forGraph(widget):
+        TCR = Grid.grid_size(widget)
+        if not TCR[0] >= 5:
+            messagebox.showwarning('Add New item', 'Please add a new item and save!!!')
+
 
 class ShowValue():
     tostore_value = {}
@@ -450,17 +463,24 @@ class ShowValue():
         myroot = mytree.getroot()
         sv_object.list_namestopopulate = [keys.tag for keys in myroot.iter() if
                                           keys.tag != 'items' and keys.tag not in All_functions.default_content_values]
+        # and keys.tag != 'Income']
         sv_object.list_valuestopopulate = [keys.text for keys in myroot.iter() if
                                            keys.tag != 'items' and keys.tag not in All_functions.default_content_values]
+        # and keys.tag != 'Income']
         print(f"the valueinside names to populate is {sv_object.list_namestopopulate}")
         print(f"the valueinside value to populate is {sv_object.list_valuestopopulate}")
         return ShowValue.add_number_of_newly_added_items(widget, main_object, sv_object)
 
     @staticmethod
     def add_number_of_newly_added_items(widget, main_object, sv_object):
-        i = 0
         while len(sv_object.list_namestopopulate) != 0:
-            main_object.on_clickingadd_item(widget, main_object, sv_object)
-            i += 1
+            if 'Income' not in sv_object.list_namestopopulate:
+                main_object.on_clickingadd_item(widget, main_object, sv_object)
+            else:
+                temp_index = sv_object.list_namestopopulate.index('Income')
+                temp_value = sv_object.list_valuestopopulate[temp_index]
+                main_object.Income_value.delete(first=0, last=25)
+                main_object.Income_value.insert(0, temp_value)
+                break
         main_object.update_income_into_dictionary(main_object.Income_value)
         main_object.add_to_dictionary()
