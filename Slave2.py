@@ -362,7 +362,7 @@ class All_functions:
             All_functions.add_to_dictionary()
 
 
-class graph():
+class graph:
     """this class deals with all graph objects"""
     canvas = None
     income_value = None
@@ -448,7 +448,7 @@ class graph():
             messagebox.showwarning('Add New item', 'Please add a new item and save!!!')
 
 
-class ShowValue():
+class ShowValue:
     tostore_value = {}
 
     def __init__(self, list_namestopopulate, list_valuestopopulate):
@@ -463,10 +463,8 @@ class ShowValue():
         myroot = mytree.getroot()
         sv_object.list_namestopopulate = [keys.tag for keys in myroot.iter() if
                                           keys.tag != 'items' and keys.tag not in All_functions.default_content_values]
-        # and keys.tag != 'Income']
         sv_object.list_valuestopopulate = [keys.text for keys in myroot.iter() if
                                            keys.tag != 'items' and keys.tag not in All_functions.default_content_values]
-        # and keys.tag != 'Income']
         print(f"the valueinside names to populate is {sv_object.list_namestopopulate}")
         print(f"the valueinside value to populate is {sv_object.list_valuestopopulate}")
         return ShowValue.add_number_of_newly_added_items(widget, main_object, sv_object)
