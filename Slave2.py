@@ -1,4 +1,5 @@
 import random
+import os
 import xml.etree.ElementTree as ET
 from tkinter import *
 from tkinter import messagebox, ttk
@@ -10,7 +11,7 @@ from matplotlib.figure import Figure
 class All_functions:
     """this is the default object having all default row and column count, which is reusable """
     font_All = ('Arial', 10, 'bold')
-    path_to_dataset = r"E:\mathan\Work\EasyMath\Dataset.xml"
+    path_to_dataset = "\Dataset.xml"
     std_fg = 'blue'
     std_bg = 'white'
     items_valuelist = ['None', 'Transport', 'Recharges', 'savings', 'Home', 'other', 'Rent', 'Debit']
@@ -30,6 +31,14 @@ class All_functions:
         self.last_default_row = last_default_row
         self.rowcount = rowcount
         self.columncount = columncount
+
+    def Get_Dataset_path(self):
+        """this is to get relative path with appending the argument passed at end"""
+        dirname = os.path.dirname(__file__)
+        print(f"the directory name is {dirname}")
+        dirname = dirname+self.path_to_dataset
+        print(f"the appended directory name is {dirname}")
+        All_functions.path_to_dataset = dirname
 
     @staticmethod
     def default_content(widget, main_object):
@@ -363,6 +372,7 @@ class All_functions:
             messagebox.showwarning('Bad Value', 'Please Enter numeric value!!!')
         else:
             All_functions.add_to_dictionary()
+
 
 
 class graph:
