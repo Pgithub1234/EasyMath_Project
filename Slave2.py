@@ -1,11 +1,14 @@
 import random
 import os
+import sys
 import xml.etree.ElementTree as ET
 from tkinter import *
 from tkinter import messagebox, ttk
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+import pathlib
+from pathlib import Path
 
 
 class All_functions:
@@ -34,11 +37,17 @@ class All_functions:
 
     def Get_Dataset_path(self):
         """this is to get relative path with appending the argument passed at end"""
-        dirname = os.path.dirname(__file__)
-        print(f"the directory name is {dirname}")
-        dirname = dirname+self.path_to_dataset
-        print(f"the appended directory name is {dirname}")
+        dirname = Path(getattr(sys, sys.executable, Path.cwd()))
+        print(dirname)
+        dirname = str(dirname)
+        dirname = dirname + self.path_to_dataset
+        print(dirname)
         All_functions.path_to_dataset = dirname
+        print(f"The path in which the code is run {pathlib.Path(__file__).parent.absolute()}")
+        print(f"The directory path  in which the code is run {pathlib.Path().absolute()}")
+
+        pathlib.Path().absolute()
+
 
     @staticmethod
     def default_content(widget, main_object):
@@ -372,7 +381,6 @@ class All_functions:
             messagebox.showwarning('Bad Value', 'Please Enter numeric value!!!')
         else:
             All_functions.add_to_dictionary()
-
 
 
 class graph:
