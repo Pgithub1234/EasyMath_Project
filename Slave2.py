@@ -398,11 +398,12 @@ class graph:
     @staticmethod
     def create_chart(widget, main_object, dictionary):
         """this will create chart as per newly added values and adjust graph height as per  newly added rows"""
+        All_functions.add_to_dictionary()
         graph.check_incomevalue_blank(main_object)
         my_graph = graph(Lables=0, Sizes=0, Color=0, Explode=0)
         graph.income_value = dictionary["Income"]
         graph.modify_graph_input(All_functions.widget_and_value_inUI, my_graph)
-        fig = Figure(figsize=(5, 2), dpi=100, frameon=True)
+        fig = Figure(figsize=(5, 2), dpi=100)
         a = fig.add_axes([0, 0, 1, 1])
         a.axis('equal')
         lables = my_graph.Lables
@@ -462,10 +463,14 @@ class graph:
             messagebox.showwarning('Update Income Value', 'Please update income value and click on update!!!')
             graph.canvas.get_tk_widget().grid_remove()
 
+
+
     @staticmethod
     def check_flag_forGraph(widget):
         TCR = Grid.grid_size(widget)
-        if not TCR[0] >= 5:
+        print(f"the row inside check flag function is {TCR[1]}")
+        print(f"the column inside check flag function is {TCR[0]}")
+        if not TCR[1] >= 6 :
             messagebox.showwarning('Add New item', 'Please add a new item and save!!!')
 
 
@@ -492,6 +497,7 @@ class ShowValue:
 
     @staticmethod
     def add_number_of_newly_added_items(widget, main_object, sv_object):
+        length = len(sv_object.list_namestopopulate)
         while len(sv_object.list_namestopopulate) != 0:
             if 'Income' not in sv_object.list_namestopopulate:
                 main_object.on_clickingadd_item(widget, main_object, sv_object)
@@ -500,6 +506,8 @@ class ShowValue:
                 temp_value = sv_object.list_valuestopopulate[temp_index]
                 main_object.Income_value.delete(first=0, last=25)
                 main_object.Income_value.insert(0, temp_value)
-                break
-        main_object.update_income_into_dictionary(main_object.Income_value)
-        main_object.add_to_dictionary()
+                main_object.update_income_into_dictionary(main_object.Income_value)
+                main_object.add_to_dictionary()
+                sv_object.list_namestopopulate.pop(temp_index)
+                sv_object.list_valuestopopulate.pop(temp_index)
+
