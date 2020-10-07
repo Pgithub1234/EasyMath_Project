@@ -6,7 +6,6 @@ import Slave2
 def main():
     """This is to call functions from slave and act accordingly """
     main_object = Slave2.All_functions(2, 2, 3, 3)
-    #graph_object = Slave2.graph(0,0,0,0)
     main_object.Get_Dataset_path()
     show_value = Slave2.ShowValue(0, 0)
     _widget = Tk()
@@ -15,7 +14,6 @@ def main():
     main_object.save_button_show_graph_button(_widget, main_object)
     main_object.onsave_add_to_xml(Slave2.All_functions.widget_and_value_inUI)
     show_value.pullvalues_fromxml(_widget, show_value, main_object)
-    #graph_object.create_chart(_widget, main_object, main_object.widget_and_value_inUI)
     _widget.mainloop()
 
 
